@@ -3,7 +3,8 @@
     "name": "startbootstrap-sb-admin-2",
     "version": "4.0.2",
     "scripts": {
-        "start": "gulp watch"
+        "start": "gulp watch",
+        "server": "node libs/index.js"
     },
     "description": "An open source Bootstrap 4 admin theme.",
     "keywords": [
@@ -35,6 +36,7 @@
         "bootstrap": "4.3.1",
         "chart.js": "2.7.3",
         "datatables.net-bs4": "1.10.19",
+        "express": "^4.16.4",
         "jquery": "3.3.1",
         "jquery.easing": "^1.4.1"
     },
