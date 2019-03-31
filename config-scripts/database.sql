@@ -1,7 +1,19 @@
--- Geração de Modelo físico
--- Sql ANSI 2003 - brModelo.
-
-
+-- --------           << Trabalho Final  >>             ------------ --
+--                                                                   --
+--                    SCRIPT DE CRIACAO (DDL)                        --
+--                                                                   --
+-- Data Criacao ..........: 31/03/2019                               --
+-- Autor(es) .............: Guilherme                                --
+-- Banco de Dados ........: MySQL                                    --
+-- Base de Dados(nome) ...: iscool                                   --
+--                                                                   --
+-- Data Ultima Alteracao ..: 31/03/2019                              --
+--    + Gerar script completo                                        --
+--    + 12 tabelas                                                   --
+--    + cria e seleciona a base iscool                               --
+-- ----------------------------------------------------------------- --
+create database if not exists iscool;
+use iscool;
 
 CREATE TABLE Prova (
 id_prova int(10) PRIMARY KEY,
