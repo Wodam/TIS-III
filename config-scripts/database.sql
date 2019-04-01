@@ -102,7 +102,7 @@ e-mail_professor varchar(255),
 coordenador_professor boolean
 );
 
-ALTER TABLE Prova ADD FOREIGN KEY(id_professor) REFERENCES Professor+Coordenador (id_professor) ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE Prova ADD FOREIGN KEY(id_professor) REFERENCES Professor (id_professor) ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE gaba_tem_questoes ADD FOREIGN KEY(id_gabarito) REFERENCES Gabarito (id_gabarito) ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE gaba_tem_questoes ADD FOREIGN KEY(id_questao) REFERENCES Questao (id_questao) ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE questao_tem_habilidade ADD FOREIGN KEY(id_questao) REFERENCES Questao (id_questao) ON UPDATE CASCADE ON DELETE RESTRICT;
@@ -110,4 +110,4 @@ ALTER TABLE questao_tem_habilidade ADD FOREIGN KEY(id_habilidade) REFERENCES Hab
 ALTER TABLE Habilidade ADD FOREIGN KEY(id_competencia) REFERENCES Competencia (id_competencia) ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE disciplinas_tem_compe ADD FOREIGN KEY(id_disciplina) REFERENCES Disciplina (id_disciplina) ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE Alternativa ADD FOREIGN KEY(id_questao) REFERENCES Questao (id_questao) ON UPDATE CASCADE ON DELETE RESTRICT;
-ALTER TABLE Questao ADD FOREIGN KEY(id_professor) REFERENCES Professor+Coordenador (id_professor) ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE Questao ADD FOREIGN KEY(id_professor) REFERENCES Professor (id_professor) ON UPDATE CASCADE ON DELETE RESTRICT;
