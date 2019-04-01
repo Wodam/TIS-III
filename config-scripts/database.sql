@@ -98,7 +98,7 @@ id_professor int(10) PRIMARY KEY,
 login_professor varchar(20),
 senha_professor varchar(20),
 nome_professor varchar(255),
-e-mail_professor varchar(255),
+email_professor varchar(255),
 coordenador_professor boolean
 );
 

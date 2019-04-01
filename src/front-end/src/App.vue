@@ -5,7 +5,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import { routes } from './routes';
 
 export default {
