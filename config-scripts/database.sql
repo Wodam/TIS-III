@@ -18,7 +18,7 @@ use iscool;
 CREATE TABLE Prova (
 id_prova int(10) PRIMARY KEY,
 nome_prova varchar(255),
-desc_prova TEXT(1000),
+desc_prova text,
 margem_prova int(2),
 fonte_prova int(2),
 data_criacao_prova date,
@@ -43,13 +43,13 @@ id_habilidade int(10)
 
 CREATE TABLE Habilidade (
 id_habilidade int(10) PRIMARY KEY,
-nome_habilidade TEXT(1000),
+nome_habilidade text,
 id_competencia int(10)
 );
 
 CREATE TABLE Competencia (
 id_competencia int(10) PRIMARY KEY,
-desc_competencia TEXT(10000)
+desc_competencia text
 );
 
 CREATE TABLE disciplinas_tem_compe (
@@ -66,15 +66,15 @@ nome_disciplina varchar(255)
 CREATE TABLE Alternativa (
 id_alternativa int(10) PRIMARY KEY,
 veracidade varchar(1),
-desc_alternativa TEXT(1000),
+desc_alternativa varchar(1000),
 id_questao int(10)
 );
 
 CREATE TABLE Questao (
 id_questao int(10) PRIMARY KEY,
 img_questao blob,
-texto_questao TEXT(10000),
-desc_questao TEXT(10000),
+texto_questao text,
+desc_questao text,
 letra_alternativa char(1),
 marcada boolean,
 id_prova int(10),
@@ -93,12 +93,12 @@ FOREIGN KEY(id_aluno) REFERENCES Aluno (id_aluno) ON UPDATE CASCADE ON DELETE RE
 FOREIGN KEY(id_prova) REFERENCES Prova (id_prova) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
-CREATE TABLE Professor+Coordenador (
+CREATE TABLE Professor (
 id_professor int(10) PRIMARY KEY,
 login_professor varchar(20),
 senha_professor varchar(20),
 nome_professor varchar(255),
-e-mail_professor varchar(255),
+email_professor varchar(255),
 coordenador_professor boolean
 );
 
