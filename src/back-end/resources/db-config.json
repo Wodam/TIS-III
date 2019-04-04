@@ -1,0 +1,26 @@
+{
+  "development": {
+    "database": "iscool",
+    "username": "root",
+    "password": "root",
+    "host": "localhost",
+    "dialect": "mysql",
+    "logging": false,
+		"insecureAuth": true
+  },
+  "production": {
+    "database": "iscool",
+    "username": "tis3",
+    "password": "tis3",
+    "host": "localhost",
+    "dialect": "mysql",
+    "logging": false
+  },
+	"test": {
+		"database": "iscool",
+		"username": "test",
+		"password": "test",
+		"host": "localhost",
+		"dialect": "mysql"
+	}
+}
