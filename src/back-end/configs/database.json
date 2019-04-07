@@ -6,7 +6,11 @@
     "host": "localhost",
     "dialect": "mysql",
     "logging": false,
-		"insecureAuth": true
+		"insecureAuth": true,
+		"define": {
+			"freezeTableName": true,
+			"timestamps": false
+		}
   },
   "production": {
     "database": "iscool",
@@ -14,13 +18,19 @@
     "password": "tis3",
     "host": "localhost",
     "dialect": "mysql",
-    "logging": false
+    "logging": false,
+		"define": {
+			"freezeTableName": true
+		}
   },
 	"test": {
 		"database": "iscool",
 		"username": "test",
 		"password": "test",
 		"host": "localhost",
-		"dialect": "mysql"
+		"dialect": "mysql",
+		"define": {
+			"freezeTableName": true
+		}
 	}
 }
