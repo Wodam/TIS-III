@@ -5,8 +5,12 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 // Router
 const express = require('express')();
+
+// UTILS
 // Database
-const database = require('./common/database');
+const database = require('./utils/database');
+// Model
+const model = require('./utils/model');
 
 // PORTS
 const port = process.env.PORT || 3000
@@ -22,11 +26,22 @@ express.use(bodyParser.urlencoded({
 }));
 
 // ROUTES
-express.use(require('./communications/rest/routes'));
+express.use(require('./communications/rest/api'));
 
 // START SERVER
 express.listen(port, async (err) => {
   console.log(`Server is running at ${port}`);
 
-	database.connect();
+	// DATABASE CONNECT
+	database.connect().then(database => {
+		console.log('Database connected :)');
+		model.importAll(database.sequelize).then(models => {
+			console.log('Models loaded');
+			// models.Question.create({ text: 'Isso é o texto da questão.', competencias: 'Aqui ficam as competencias', habilidades: 'Aqui ficam as habilidades', alternativas: 'Aqui ficam as alternativas' })
+		}).catch(error => {
+			console.error('Error on models load.', error)
+		});
+	}).catch(error => {
+		console.error('Error on connect to database :(', error);
+	});
 });
