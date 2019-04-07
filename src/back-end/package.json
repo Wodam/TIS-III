@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node index",
-		"start-nodemon": "nodemon index",
+    "dev": "nodemon index",
     "test": "NODE_ENV=test ./node_modules/.bin/mocha ./tests --exit"
   },
   "dependencies": {
@@ -17,6 +17,7 @@
     "sequelize": "^5.2.8"
   },
   "devDependencies": {
-    "nodemon": "^1.18.10"
+    "nodemon": "^1.18.10",
+    "sequelize-cli": "^5.4.0"
   }
 }
