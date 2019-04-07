@@ -9,5 +9,5 @@ export const routes = [
   {
 	  path: '/questoes',
 	  component: Questoes
-  }
+	}
 ];
