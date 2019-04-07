@@ -39,9 +39,11 @@ express.listen(port, async (err) => {
 			console.log('Models loaded');
 			// models.Question.create({ text: 'Isso é o texto da questão.', competencias: 'Aqui ficam as competencias', habilidades: 'Aqui ficam as habilidades', alternativas: 'Aqui ficam as alternativas' })
 		}).catch(error => {
-			console.error('Error on models load.', error)
+			console.error('Error on models load.');
+			console.log(error);
 		});
 	}).catch(error => {
-		console.error('Error on connect to database :(', error);
+		console.error('Error on connect to database :(');
+		console.log(error);
 	});
 });
