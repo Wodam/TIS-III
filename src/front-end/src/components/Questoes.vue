@@ -12,38 +12,16 @@
                 <v-flex lg12 sm12>
                   <v-textarea v-model="statement" label="Enunciado" auto-grow rows="1"></v-textarea>
                 </v-flex>
-                <v-flex>
-                  <v-checkbox v-model="correctAnswer" value="a"></v-checkbox>
-                </v-flex>
-                <v-flex lg11 sm11>
-                  <v-textarea label="a)" auto-grow rows="1"></v-textarea>
-                </v-flex>
-                <v-flex>
-                  <v-checkbox v-model="correctAnswer" value="b"></v-checkbox>
-                </v-flex>
-                <v-flex lg11 sm11>
-                  <v-textarea label="b)" auto-grow rows="1"></v-textarea>
-                </v-flex>
-                <v-flex>
-                  <v-checkbox v-model="correctAnswer" value="c"></v-checkbox>
-                </v-flex>
-                <v-flex lg11 sm11>
-                  <v-textarea label="c)" auto-grow rows="1"></v-textarea>
-                </v-flex>
-                <v-flex>
-                  <v-checkbox v-model="correctAnswer" value="d"></v-checkbox>
-                </v-flex>
-                <v-flex lg11 sm11>
-                  <v-textarea label="d)" auto-grow rows="1"></v-textarea>
-                </v-flex>
-                <v-flex>
-                  <v-checkbox v-model="correctAnswer" value="e"></v-checkbox>
-                </v-flex>
-                <v-flex lg11 sm11>
-                  <v-textarea label="e)" auto-grow rows="1"></v-textarea>
-                </v-flex>
+                <template v-for="(option, index) in options">
+                  <v-flex :key="index">
+                    <v-checkbox v-model="correctAnswer" :value="option.value"></v-checkbox>
+                  </v-flex>
+                  <v-flex lg11 sm11 :key="index + option">
+                    <v-textarea :label="option.label" auto-grow rows="1"></v-textarea>
+                  </v-flex>
+                </template>
                 <v-flex lg12 sm12>
-                  <v-autocomplete :items="skills" chips label="Competências" multiple>
+                  <v-autocomplete v-model="selectedSkills" :items="skills" chips item-text="name" label="Competências" multiple>
                     <template v-slot:no-data>
                       <v-list-tile>
                         <v-btn>Criar</v-btn>
@@ -55,7 +33,7 @@
                   </v-autocomplete>
                 </v-flex>
                 <v-flex lg12 sm12>
-                  <v-autocomplete v-model="abilities" chips label="Habilidades" multiple>
+                  <v-autocomplete  v-model="selectedAbilities" :items="abilities" chips label="Habilidades" multiple>
                     <template v-slot:no-data>
                       <v-list-tile>
                         <v-btn>Criar</v-btn>
@@ -68,8 +46,8 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer/>
-            <v-btn color="blue-grey" dark @click="dialogClose()">Close</v-btn>
-            <v-btn color="blue-grey" dark>Save</v-btn>
+            <v-btn color="blue-grey" dark @click="handleClose()">Cancelar</v-btn>
+            <v-btn color="blue-grey" dark @click="handleSave()">Salvar</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -81,13 +59,13 @@
                 <v-toolbar-title class="text-md-center">Questões</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-layout justify-end>
-                  <v-flex lg8 sm2>
+                  <v-flex lg8 sm6 xs6>
                     <v-text-field
                       flat
                       solo-inverted
                       hide-details
                       prepend-inner-icon="mdi-magnify"
-                      label="Search"
+                      label="Pesquisar"
                       class="hidden-sm-and-down"
                     ></v-text-field>
                   </v-flex>
@@ -119,6 +97,15 @@ export default {
   data() {
     return {
       answer: [],
+      options: [
+        { value: 'a', label: 'a)' },
+        { value: 'b', label: 'b)' },
+        { value: 'c', label: 'c)' },
+        { value: 'd', label: 'd)' },
+        { value: 'e', label: 'e)' }
+      ],
+      selectedSkills: [],
+      selectedAbilities: [],
       statement: '',
       skills: [ { name: 'batata' } ],
       abilities: [],
@@ -130,15 +117,22 @@ export default {
     createQuestion() {
       this.dialog = true;
     },
-    dialogClose() {
+    handleClose() {
       this.setDefaultValues()
       this.dialog = false;
     },
     setDefaultValues() {
       this.answer = []
       this.statement = ''
-      this.skills = [ { name: 'batata' } ]
-      this.abilities = []
+      this.selectedSkills = []
+      this.selectedAbilities = []
+    },
+    handleSave() {
+      console.log(this)
+      this.questions.push({
+        statement: this.statement
+      })
+      this.handleClose()
     }
   },
   computed: {
