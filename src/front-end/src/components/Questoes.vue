@@ -74,7 +74,7 @@
               </v-toolbar>
               <v-card-text>
                 <v-form>
-                  <v-btn @click="createQuestion()" class="create-button" block dark color="blue-grey">
+                  <v-btn @click="createQuestion()" class="create-button" block dark color="green">
                     <v-icon>mdi-plus</v-icon>
                     <div class="button-text">CRIAR NOVA QUESTÃO</div>
                   </v-btn>
@@ -90,7 +90,7 @@
                     <v-layout justify-end>
                       <div>
                         <v-btn flat icon @click="handleEdit(question)"><v-icon>mdi-pencil</v-icon></v-btn>
-                        <v-btn flat icon @click="handleDelete(question)"><v-icon>mdi-delete</v-icon></v-btn>  
+                        <v-btn flat icon @click="handleDelete(question)"><v-icon>mdi-delete</v-icon></v-btn>
                       </div>
                     </v-layout>
                   </v-card-text>
