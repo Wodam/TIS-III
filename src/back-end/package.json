@@ -7,6 +7,9 @@
   "scripts": {
     "start": "node index",
     "dev": "nodemon index",
+		"migrate": "npx sequelize db:migrate",
+		"undo": "npx sequelize db:migrate:undo",
+		"undo-all": "npx sequelize db:migrate:undo:all",
     "test": "NODE_ENV=test ./node_modules/.bin/mocha ./tests --exit"
   },
   "dependencies": {
