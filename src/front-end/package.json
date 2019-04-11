@@ -12,14 +12,21 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.8",
     "@fortawesome/free-solid-svg-icons": "^5.5.0",
     "@fortawesome/vue-fontawesome": "^0.1.2",
-    "bootstrap-vue": "^2.0.0-rc.11",
+    "axios": "^0.18.0",
+    "dotenv": "^6.1.0",
     "moment": "^2.22.2",
     "vue": "^2.5.17",
     "vue-resource": "^1.5.1",
-    "vue-router": "^3.0.2"
+    "vue-router": "^3.0.2",
+    "vue-search-select": "^2.8.3",
+    "vue-socket.io": "^3.0.1",
+    "vuedraggable": "^2.17.0",
+    "vuetify": "^1.5.9"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.5.0",
+    "@mdi/font": "^3.5.95",
+    "@vue/cli-plugin-babel": "^3.1.1",
     "@vue/cli-service": "^3.1.4",
     "vue-template-compiler": "^2.5.17"
   },

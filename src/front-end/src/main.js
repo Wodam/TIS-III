@@ -8,7 +8,9 @@ import { routes } from './routes';
 // "Front-End"
 import App from './App.vue';
 import moment from "moment";
-import BootstrapVue from 'bootstrap-vue';
+import Vuetify from 'vuetify';
+import 'vuetify/dist/vuetify.min.css';
+import '@mdi/font/css/materialdesignicons.css';
 
 // Router
 const router = new VueRouter({ routes, mode: 'history'});
@@ -16,7 +18,7 @@ const router = new VueRouter({ routes, mode: 'history'});
 // USES
 Vue.use(VueResource);
 Vue.use(VueRouter);
-Vue.use(BootstrapVue);
+Vue.use(Vuetify, { iconfont: 'mdi' });
 
 // FILTERS
 Vue.filter('formatDate', function(value) {

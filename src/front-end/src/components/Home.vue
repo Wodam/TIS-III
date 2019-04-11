@@ -1,11 +1,13 @@
 <template>
-  <div class="questoes">
-		Aqui fica a Home :)
+  <div>
+    <Menu/>
   </div>
 </template>
 <script>
+import Menu from './Menu.vue'
 export default {
   name: "Questoes",
+  components: { Menu },
   data() {
     return {};
   }
