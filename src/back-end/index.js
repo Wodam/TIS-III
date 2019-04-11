@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 // Router
 const express = require('express')();
+// Cors (Cross origin requests)
+const cors = require('cors');
 
 // UTILS
 // Database
@@ -24,6 +26,7 @@ express.use(bodyParser.json());
 express.use(bodyParser.urlencoded({
   extended: false
 }));
+express.use(cors());
 
 // ROUTES
 express.use(require('./app/communications/rest/api'));
