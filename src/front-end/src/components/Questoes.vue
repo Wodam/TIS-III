@@ -87,6 +87,12 @@
                     <div><span :class="question.answer === 'c' ? 'question-answer' : ''">c)</span> {{ question.c }}</div>
                     <div><span :class="question.answer === 'd' ? 'question-answer' : ''">d)</span> {{ question.d }}</div>
                     <div><span :class="question.answer === 'e' ? 'question-answer' : ''">e)</span> {{ question.e }}</div>
+                    <v-layout justify-end>
+                      <div>
+                        <v-btn flat icon @click="handleEdit(question)"><v-icon>mdi-pencil</v-icon></v-btn>
+                        <v-btn flat icon @click="handleDelete(question)"><v-icon>mdi-delete</v-icon></v-btn>  
+                      </div>
+                    </v-layout>
                   </v-card-text>
                 </v-card>
               </v-card-text>
@@ -177,6 +183,23 @@ export default {
     },
     getListedQuestions() {
       return (this.searchStr) ? this.listedQuestions : this.questions;
+    },
+    handleEdit(questionToEdit) {
+      this.answer = [questionToEdit.answer]
+      this.text = questionToEdit.text
+      this.options.forEach((option) => {
+        option.body = questionToEdit[option.value]
+      })
+      this.questions = this.questions.filter((question) => {
+        return JSON.stringify(question) !== JSON.stringify(questionToEdit)
+      })
+      this.dialog = true
+    },
+    handleDelete(questionToDelete) {
+      axios.delete('/', { questionToDelete })
+      this.questions = this.questions.filter((question) => {
+        return JSON.stringify(question) !== JSON.stringify(questionToDelete)
+      })
     }
   },
   computed: {
