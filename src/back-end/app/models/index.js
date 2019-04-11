@@ -3,20 +3,18 @@
 const fs = require('fs');
 const path = require('path');
 
-const modelsDir = __dirname + '/../app/models';
-
-module.exports = {
+class Models {
 	// --- Import all models ---
-	importAll: sequelize => {
+	importAll (sequelize) {
 		return new Promise((resolve, reject) => {
 			try {
 				this.models = {};
 
 				fs
-					.readdirSync(modelsDir)
-					.filter(file => (file.indexOf('.') !== 0) && (file !== 'index.js') && (file.slice(-3) === '.js'))
+					.readdirSync(__dirname)
+					.filter(file => (file.indexOf('.') !== 0) && (file !== path.basename(__filename)) && (file.slice(-3) === '.js'))
 					.forEach(file => {
-						const model = sequelize['import'](path.join(modelsDir, file));
+						const model = sequelize['import'](path.join(__dirname, file));
 						this.models[model.name] = model;
 					});
 
@@ -26,10 +24,14 @@ module.exports = {
 					}
 				});
 
+				console.log('Models loaded :)');
 				resolve(this.models);
 			} catch (e) {
+				console.error('Error on models load :(');
 				reject(e)
 			}
 		});
 	}
 }
+
+module.exports = new Models();
