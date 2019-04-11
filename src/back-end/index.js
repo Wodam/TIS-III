@@ -8,9 +8,9 @@ const express = require('express')();
 
 // UTILS
 // Database
-const database = require('./utils/database');
+const database = require('./app/database');
 // Model
-const model = require('./utils/model');
+const model = require('./app/models');
 
 // PORTS
 const port = process.env.PORT || 3000
@@ -26,24 +26,16 @@ express.use(bodyParser.urlencoded({
 }));
 
 // ROUTES
-express.use(require('./communications/rest/api'));
+express.use(require('./app/communications/rest/api'));
 
 // START SERVER
-express.listen(port, async (err) => {
-  console.log(`Server is running at ${port}`);
+express.listen(port, _ => {
+	try {
+	  console.log(`Server is running at ${port}`);
 
-	// DATABASE CONNECT
-	database.connect().then(database => {
-		console.log('Database connected :)');
-		model.importAll(database.sequelize).then(models => {
-			console.log('Models loaded');
-			// models.Question.create({ text: 'Isso é o texto da questão.', competencias: 'Aqui ficam as competencias', habilidades: 'Aqui ficam as habilidades', alternativas: 'Aqui ficam as alternativas' })
-		}).catch(error => {
-			console.error('Error on models load.');
-			console.log(error);
-		});
-	}).catch(error => {
-		console.error('Error on connect to database :(');
-		console.log(error);
-	});
+		// DATABASE CONNECT
+		database.connect();
+	} catch (e) {
+		console.log(e)
+	}
 });
