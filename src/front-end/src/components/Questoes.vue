@@ -80,13 +80,15 @@
                   </v-btn>
                 </v-form>
                 <v-card v-for="(question, index) in getListedQuestions()" :key="index" class="question-card">
-                  <v-card-text>
-                    <div>{{ question.text }}</div>
-                    <div><span :class="question.answer === 'a' ? 'question-answer' : ''">a)</span> {{ question.a }}</div>
-                    <div><span :class="question.answer === 'b' ? 'question-answer' : ''">b)</span> {{ question.b }}</div>
-                    <div><span :class="question.answer === 'c' ? 'question-answer' : ''">c)</span> {{ question.c }}</div>
-                    <div><span :class="question.answer === 'd' ? 'question-answer' : ''">d)</span> {{ question.d }}</div>
-                    <div><span :class="question.answer === 'e' ? 'question-answer' : ''">e)</span> {{ question.e }}</div>
+                  <v-card-text question-id=question.id>
+                    <div>{{ question.texto_questao }}</div>
+										<div v-for="(alternativa,index) in question.alternativas" :key="index">
+											<div><span :class="+question.letra_alternativa === index+1 ? 'question-answer' : ''">{{letras[index]}}</span> {{ alternativa.desc_alternativa }}</div>
+										</div>
+                    <!-- <div><span :class="question.answer === '2' ? 'question-answer' : ''">b)</span> {{ question.b }}</div> -->
+                    <!-- <div><span :class="question.answer === '3' ? 'question-answer' : ''">c)</span> {{ question.c }}</div> -->
+                    <!-- <div><span :class="question.answer === '4' ? 'question-answer' : ''">d)</span> {{ question.d }}</div> -->
+                    <!-- <div><span :class="question.answer === '5' ? 'question-answer' : ''">e)</span> {{ question.e }}</div> -->
                     <v-layout justify-end>
                       <div>
                         <v-btn flat icon @click="handleEdit(question)"><v-icon>mdi-pencil</v-icon></v-btn>
@@ -113,12 +115,13 @@ export default {
   data() {
     return {
       answer: [],
+			letras: ['a)','b)','c)','d)','e)'],
       options: [
-        { value: 'a', label: 'a)', body: '' },
-        { value: 'b', label: 'b)', body: '' },
-        { value: 'c', label: 'c)', body: '' },
-        { value: 'd', label: 'd)', body: '' },
-        { value: 'e', label: 'e)', body: '' }
+        { value: '1', label: 'a)', body: '' },
+        { value: '2', label: 'b)', body: '' },
+        { value: '3', label: 'c)', body: '' },
+        { value: '4', label: 'd)', body: '' },
+        { value: '5', label: 'e)', body: '' }
       ],
       selectedSkills: [],
       selectedAbilities: [],
@@ -143,12 +146,14 @@ export default {
   },
   created: function() {
     this.listedQuestions = this.questions
-    axios.defaults.baseURL = 'https://localhost:3000'
+    axios.defaults.baseURL = 'http://localhost:3000';
+		this.reload();
   },
   methods: {
     reload() {
-      axios.get('/').then((response) => {
-        questions = response.data;
+      axios.get('/api/question').then((response) => {
+        this.questions = response.data;
+				console.log(this.questions)
       }).catch((error) => {
         console.log(error)
       })
@@ -159,6 +164,7 @@ export default {
     handleClose() {
       this.setDefaultValues()
       this.dialog = false;
+			this.reload();
     },
     setDefaultValues() {
       this.answer = []
@@ -170,16 +176,25 @@ export default {
       })
     },
     handleSave() {
-      let newQuestion = {
-        text: this.text,
-        answer: this.answer.pop(),
-      }
-      this.options.forEach((option) => {
-        newQuestion[option.value] = option.body
-      })
-      this.questions.push(newQuestion)
-      axios.post('/', { ...newQuestion })
-      this.handleClose()
+			let data = {
+				questao: {
+	        texto_questao: this.text,
+	        letra_alternativa: this.answer.pop()
+	      },
+				alternativas: this.options.map(option => {return {desc_alternativa: option.body}})
+			}
+      // let newQuestion = {
+      //   text: this.text,
+      //   answer: this.answer.pop(),
+      // }
+      // this.options.forEach((option) => {
+      //   newQuestion[option.value] = option.body
+      // })
+			console.log(data)
+      // this.questions.push(newQuestion)
+      axios.post('/api/question', data).then(_ => {
+				this.handleClose()
+			})
     },
     getListedQuestions() {
       return (this.searchStr) ? this.listedQuestions : this.questions;
@@ -196,10 +211,13 @@ export default {
       this.dialog = true
     },
     handleDelete(questionToDelete) {
-      axios.delete('/', { questionToDelete })
-      this.questions = this.questions.filter((question) => {
-        return JSON.stringify(question) !== JSON.stringify(questionToDelete)
-      })
+			console.log(questionToDelete)
+      axios.delete('/api/question/'+questionToDelete.id_questao).then(_ => {
+				this.reload()
+			})
+      // this.questions = this.questions.filter((question) => {
+      //   return JSON.stringify(question) !== JSON.stringify(questionToDelete)
+      // })
     }
   },
   computed: {
