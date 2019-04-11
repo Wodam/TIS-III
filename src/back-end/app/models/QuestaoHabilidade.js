@@ -1,5 +1,4 @@
-const questao = require('./Questao')
-const habilidade = require('./Habilidade')
+'use strict';
 
 module.exports = function (sequelize, DataTypes) {
 	const QuestaoHabilidade = sequelize.define('QuestaoHabilidade', {
@@ -13,8 +12,16 @@ module.exports = function (sequelize, DataTypes) {
 		}
 	});
 
-	QuestaoHabilidade.belongsTo(questao, {as: 'questao', foreignKey: 'id_questao'});
-	QuestaoHabilidade.belongsTo(habilidade, {as: 'habilidade', foreignKey: 'id_habilidade'});
+	QuestaoHabilidade.associate = models => {
+		QuestaoHabilidade.belongsTo(models.Questao, {
+			as: 'questao',
+			foreignKey: 'id_questao'
+		});
+		QuestaoHabilidade.belongsTo(models.Habilidade, {
+			as: 'habilidade',
+			foreignKey: 'id_habilidade'
+		});
+	}
 
 	return QuestaoHabilidade;
 };

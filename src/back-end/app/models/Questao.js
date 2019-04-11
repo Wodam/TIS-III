@@ -1,6 +1,4 @@
-const alternativa = require('./Alternativa')
-const disciplina = require('./Disciplina')
-const questao_habilidade = require('./QuestaoHabilidade')
+'use strict';
 
 module.exports = function (sequelize, DataTypes) {
 	const Questao = sequelize.define('Questao', {
@@ -37,9 +35,20 @@ module.exports = function (sequelize, DataTypes) {
 		}
 	});
 
-	Questao.hasMany(alternativa, {as: 'alternativas', foreignKey: 'id_questao'});
-	Questao.hasMany(questao_habilidade, {as: 'questao_habilidade', foreignKey: 'id_questao'});
-	Questao.belongsTo(disciplina, {as: 'disciplina', foreignKey: 'id_disciplina'});
+	Questao.associate = models => {
+		Questao.hasMany(models.Alternativa, {
+			as: 'alternativas',
+			foreignKey: 'id_questao'
+		});
+		Questao.hasMany(models.QuestaoHabilidade, {
+			as: 'questao_habilidade',
+			foreignKey: 'id_questao'
+		});
+		Questao.belongsTo(models.Disciplina, {
+			as: 'disciplina',
+			foreignKey: 'id_disciplina'
+		});
+	}
 
 	return Questao;
 };

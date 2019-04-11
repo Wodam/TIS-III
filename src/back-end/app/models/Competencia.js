@@ -1,5 +1,4 @@
-const habilidade = require('./Habilidade')
-const disciplina_competencia = require('./DisciplinaCompetencia')
+'use strict';
 
 module.exports = function (sequelize, DataTypes) {
 	const Competencia = sequelize.define('Competencia', {
@@ -13,8 +12,16 @@ module.exports = function (sequelize, DataTypes) {
 		}
 	});
 
-	Competencia.hasMany(habilidade, {as: 'habilidades', foreignKey: 'id_competencia'});
-	Competencia.hasMany(disciplina_competencia, {as: 'disciplina_competencia', foreignKey: 'id_competencia'});
+	Competencia.associate = models => {
+		Competencia.hasMany(models.Habilidade, {
+			as: 'habilidades',
+			foreignKey: 'id_competencia'
+		});
+		Competencia.hasMany(models.DisciplinaCompetencia, {
+			as: 'disciplina_competencia',
+			foreignKey: 'id_competencia'
+		});
+	}
 
 	return Competencia;
 };

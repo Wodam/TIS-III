@@ -1,5 +1,4 @@
-const competencia = require('./Competencia')
-const questao_habilidade = require('./QuestaoHabilidade.js')
+'use strict';
 
 module.exports = function (sequelize, DataTypes) {
 	const Habilidade = sequelize.define('Habilidade', {
@@ -17,8 +16,16 @@ module.exports = function (sequelize, DataTypes) {
 		}
 	});
 
-	Habilidade.belongsTo(competencia, {as: 'competencia', foreignKey: 'id_competencia'});
-	Habilidade.hasMany(questao_habilidade, {as: 'questao_habilidade', foreignKey: 'id_habilidade'});
+	Habilidade.associate = models => {
+		Habilidade.belongsTo(models.Competencia, {
+			as: 'competencia',
+			foreignKey: 'id_competencia'
+		});
+		Habilidade.hasMany(models.QuestaoHabilidade, {
+			as: 'questao_habilidade',
+			foreignKey: 'id_habilidade'
+		});
+	}
 
 	return Habilidade;
 };

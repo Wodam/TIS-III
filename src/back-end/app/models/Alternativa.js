@@ -1,4 +1,4 @@
-const questao = require('./Questao')
+'use strict';
 
 module.exports = function (sequelize, DataTypes) {
 	const Alternativa = sequelize.define('Alternativa', {
@@ -19,7 +19,12 @@ module.exports = function (sequelize, DataTypes) {
 		}
 	});
 
-	Alternativa.belongsTo(questao, {as: 'questao', foreignKey: 'id_questao'});
+	Alternativa.associate = models => {
+		Alternativa.belongsTo(models.Questao, {
+			as: 'questao',
+			foreignKey: 'id_questao'
+		});
+	}
 
 	return Alternativa;
 };

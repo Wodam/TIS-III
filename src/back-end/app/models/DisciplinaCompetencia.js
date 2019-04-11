@@ -1,5 +1,4 @@
-const competencia = require('./Competencia')
-const disciplina = require('./Disciplina')
+'use strict';
 
 module.exports = function (sequelize, DataTypes) {
 	const DisciplinaCompetencia = sequelize.define('DisciplinaCompetencia', {
@@ -13,8 +12,16 @@ module.exports = function (sequelize, DataTypes) {
 		}
 	});
 
-	DisciplinaCompetencia.belongsTo(competencia, {as: 'competencia', foreignKey: 'id_competencia'});
-	DisciplinaCompetencia.belongsTo(disciplina, {as: 'disciplina', foreignKey: 'id_disciplina'});
+	DisciplinaCompetencia.associate = models => {
+		DisciplinaCompetencia.belongsTo(models.Competencia, {
+			as: 'competencia',
+			foreignKey: 'id_competencia'
+		});
+		DisciplinaCompetencia.belongsTo(models.Disciplina, {
+			as: 'disciplina',
+			foreignKey: 'id_disciplina'
+		});
+	}
 
 	return DisciplinaCompetencia;
 };
