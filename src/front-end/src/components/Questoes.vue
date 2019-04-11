@@ -10,21 +10,21 @@
             <v-container>
               <v-layout wrap>
                 <v-flex lg12 sm12>
-                  <v-textarea v-model="statement" label="Enunciado" auto-grow rows="1"></v-textarea>
+                  <v-textarea v-model="text" label="Enunciado" auto-grow rows="1"></v-textarea>
                 </v-flex>
                 <template v-for="(option, index) in options">
                   <v-flex :key="index">
                     <v-checkbox v-model="correctAnswer" :value="option.value"></v-checkbox>
                   </v-flex>
                   <v-flex lg11 sm11 :key="index + option">
-                    <v-textarea :label="option.label" auto-grow rows="1"></v-textarea>
+                    <v-textarea v-model="option.body" :label="option.label" auto-grow rows="1"></v-textarea>
                   </v-flex>
                 </template>
                 <v-flex lg12 sm12>
                   <v-autocomplete v-model="selectedSkills" :items="skills" chips item-text="name" label="Competências" multiple>
                     <template v-slot:no-data>
                       <v-list-tile>
-                        <v-btn>Criar</v-btn>
+                        <v-btn class="autocomplete-button">Criar</v-btn>
                       </v-list-tile>
                     </template>
                     <template v-slot:selection="data">
@@ -36,7 +36,7 @@
                   <v-autocomplete  v-model="selectedAbilities" :items="abilities" chips label="Habilidades" multiple>
                     <template v-slot:no-data>
                       <v-list-tile>
-                        <v-btn>Criar</v-btn>
+                        <v-btn class="autocomplete-button">Criar</v-btn>
                       </v-list-tile>
                     </template>
                   </v-autocomplete>
@@ -61,6 +61,7 @@
                 <v-layout justify-end>
                   <v-flex lg8 sm6 xs6>
                     <v-text-field
+                      v-model="searchInput"
                       flat
                       solo-inverted
                       hide-details
@@ -78,8 +79,15 @@
                     <div class="button-text">CRIAR NOVA QUESTÃO</div>
                   </v-btn>
                 </v-form>
-                <v-card v-for="(question, index) in questions" :key="index" class="question-card">
-                  <v-card-text>{{ question.statement }}</v-card-text>
+                <v-card v-for="(question, index) in getListedQuestions()" :key="index" class="question-card">
+                  <v-card-text>
+                    <div>{{ question.text }}</div>
+                    <div><span :class="question.answer === 'a' ? 'question-answer' : ''">a)</span> {{ question.a }}</div>
+                    <div><span :class="question.answer === 'b' ? 'question-answer' : ''">b)</span> {{ question.b }}</div>
+                    <div><span :class="question.answer === 'c' ? 'question-answer' : ''">c)</span> {{ question.c }}</div>
+                    <div><span :class="question.answer === 'd' ? 'question-answer' : ''">d)</span> {{ question.d }}</div>
+                    <div><span :class="question.answer === 'e' ? 'question-answer' : ''">e)</span> {{ question.e }}</div>
+                  </v-card-text>
                 </v-card>
               </v-card-text>
             </v-card>
@@ -91,6 +99,8 @@
 </template>
 <script>
 import Menu from './Menu.vue'
+import axios from 'axios'
+
 export default {
   name: "Questoes",
   components: { Menu },
@@ -98,22 +108,45 @@ export default {
     return {
       answer: [],
       options: [
-        { value: 'a', label: 'a)' },
-        { value: 'b', label: 'b)' },
-        { value: 'c', label: 'c)' },
-        { value: 'd', label: 'd)' },
-        { value: 'e', label: 'e)' }
+        { value: 'a', label: 'a)', body: '' },
+        { value: 'b', label: 'b)', body: '' },
+        { value: 'c', label: 'c)', body: '' },
+        { value: 'd', label: 'd)', body: '' },
+        { value: 'e', label: 'e)', body: '' }
       ],
       selectedSkills: [],
       selectedAbilities: [],
-      statement: '',
+      text: '',
       skills: [ { name: 'batata' } ],
       abilities: [],
       dialog: false,
-      questions: [ { statement: 'Batatao batao batatao' }, { statement: 'cachorro cachorro cachorro' }, { statement: 'cachorro cachorro cachorro' }, { statement: 'cachorro cachorro cachorro' }, { statement: 'cachorro cachorro cachorro' }, { statement: 'cachorro cachorro cachorro' } ]
+      questions: [
+        {
+          text: 'batata',
+          a: 'plei',
+          b: 'plei',
+          c: 'plei',
+          d: 'plei',
+          e: 'plei',
+          answer: 'b'
+        }
+      ],
+      listedQuestions: [],
+      searchStr: ''
     };
   },
+  created: function() {
+    this.listedQuestions = this.questions
+    axios.defaults.baseURL = 'https://localhost:3000'
+  },
   methods: {
+    reload() {
+      axios.get('/').then((response) => {
+        questions = response.data;
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
     createQuestion() {
       this.dialog = true;
     },
@@ -123,16 +156,27 @@ export default {
     },
     setDefaultValues() {
       this.answer = []
-      this.statement = ''
+      this.text = ''
       this.selectedSkills = []
       this.selectedAbilities = []
+      this.options.forEach((option) => {
+        option.body = ''
+      })
     },
     handleSave() {
-      console.log(this)
-      this.questions.push({
-        statement: this.statement
+      let newQuestion = {
+        text: this.text,
+        answer: this.answer.pop(),
+      }
+      this.options.forEach((option) => {
+        newQuestion[option.value] = option.body
       })
+      this.questions.push(newQuestion)
+      axios.post('/', { ...newQuestion })
       this.handleClose()
+    },
+    getListedQuestions() {
+      return (this.searchStr) ? this.listedQuestions : this.questions;
     }
   },
   computed: {
@@ -142,6 +186,17 @@ export default {
       },
       set: function(value) {
         this.answer = [value.pop()]
+      }
+    },
+    searchInput: {
+      get: function() {
+        return this.searchStr
+      },
+      set: function(value) {
+        this.searchStr = value
+        this.listedQuestions = this.questions.filter((question) => {
+          return question.text.includes(this.searchStr)
+        })
       }
     }
   }
@@ -156,5 +211,11 @@ export default {
 }
 .question-card {
   margin-top: 15px;
+}
+.question-answer {
+  font-weight: bold;
+}
+.autocomplete-button {
+  width: 95%;
 }
 </style>
