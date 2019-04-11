@@ -4,8 +4,8 @@ module.exports = function (sequelize, DataTypes) {
 	const Questao = sequelize.define('Questao', {
 		id_questao: {
 			type: DataTypes.INTEGER,
-			autoIncrement: true,
-			primaryKey: true
+			primaryKey: true,
+			autoIncrement: true
 		},
 		img_questao: {
 			type: DataTypes.BLOB
