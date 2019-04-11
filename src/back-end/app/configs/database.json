@@ -1,0 +1,36 @@
+{
+  "development": {
+    "database": "iscool",
+    "username": "root",
+    "password": "root",
+    "host": "localhost",
+    "dialect": "mysql",
+    "logging": false,
+		"insecureAuth": true,
+		"define": {
+			"freezeTableName": true,
+			"timestamps": false
+		}
+  },
+  "production": {
+    "database": "iscool",
+    "username": "tis3",
+    "password": "tis3",
+    "host": "localhost",
+    "dialect": "mysql",
+    "logging": false,
+		"define": {
+			"freezeTableName": true
+		}
+  },
+	"test": {
+		"database": "iscool",
+		"username": "test",
+		"password": "test",
+		"host": "localhost",
+		"dialect": "mysql",
+		"define": {
+			"freezeTableName": true
+		}
+	}
+}
